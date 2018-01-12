@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
+import android.util.Base64;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -21,6 +22,7 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import by.gsu.RoadStatusService.models.Picture;
 import by.gsu.roadstatusservice_app.R;
 
 
@@ -40,6 +42,10 @@ public class ImageLoader {
     final int stub_id= R.drawable.stub;
     public void DisplayImage(String url, ImageView imageView)
     {
+
+
+
+        /*
         imageViews.put(imageView, url);
         Bitmap bitmap=memoryCache.get(url);
         if(bitmap!=null)
@@ -49,6 +55,26 @@ public class ImageLoader {
             queuePhoto(url, imageView);
             imageView.setImageResource(stub_id);
         }
+*/
+
+
+        Picture p = new Picture();
+        p.setId(11);
+        p.setName("pict");
+        p.setData(url);
+
+
+        byte[] decodedString = Base64.decode(p.getData(), Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+        imageView.setImageBitmap(decodedByte);
+
+
+
+
+
+
+
     }
         
     private void queuePhoto(String url, ImageView imageView)

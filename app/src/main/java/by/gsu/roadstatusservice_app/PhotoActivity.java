@@ -106,12 +106,12 @@ public class PhotoActivity extends AppCompatActivity {
             }
         });
 
-        buttonCancel = (Button) findViewById(R.id.buttonSave);
+     /*   buttonCancel = (Button) findViewById(R.id.buttonSave);
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
             }
-        });
+        });*/
     }
 
     private Picture newPicture;
