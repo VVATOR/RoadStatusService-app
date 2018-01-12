@@ -28,6 +28,8 @@ public class PhotoActivity extends AppCompatActivity {
     private IRoadStatusClient client = new Client();
     private ImageView iv;
     private Button buttonSave;
+    private Button buttonCancel;
+
     private EditText editFileName;
     private EditText editDescription;
     private Location location;
@@ -49,6 +51,9 @@ public class PhotoActivity extends AppCompatActivity {
             }
         });
 
+
+
+        location = (Location) getIntent().getParcelableExtra(Location.class.getCanonicalName());
         iv = (ImageView) findViewById(R.id.photoImageView);
         editFileName = (EditText) findViewById(R.id.editFileName);
         editDescription = (EditText) findViewById(R.id.editDescription);
@@ -58,8 +63,8 @@ public class PhotoActivity extends AppCompatActivity {
         //String fName = intent.getStringExtra("fname");
 
 
-        location = (Location) getIntent().getParcelableExtra(Location.class.getCanonicalName());
-        ;
+
+
 
 
         Bitmap bitmap = (Bitmap) data.getExtras().get("data");
@@ -69,8 +74,6 @@ public class PhotoActivity extends AppCompatActivity {
         buttonSave = (Button) findViewById(R.id.buttonSave);
         buttonSave.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
-
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 BitmapDrawable drawable = (BitmapDrawable) iv.getDrawable();
 
@@ -100,10 +103,15 @@ public class PhotoActivity extends AppCompatActivity {
                     }
                 }.execute();
 
-
             }
         });
 
+        buttonCancel = (Button) findViewById(R.id.buttonSave);
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     private Picture newPicture;

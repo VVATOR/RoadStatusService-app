@@ -25,6 +25,7 @@ import by.gsu.RoadStatusService.models.Picture;
 import by.gsu.client.Client;
 import by.gsu.client.IRoadStatusClient;
 import by.gsu.roadstatusservice_app.exceptions.LocationException;
+import by.gsu.roadstatusservice_app.lazylist.ListActivity;
 import by.gsu.roadstatusservice_app.utils.LocationUtils;
 
 public class MainActivity extends AppCompatActivity
@@ -123,7 +124,8 @@ public class MainActivity extends AppCompatActivity
             startActivityForResult(intent, Action.PHOTO.ordinal());
 
         } else if (id == R.id.nav_gallery) {
-
+            Intent intent = new Intent(MainActivity.this, ListActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_slideshow) {
             Intent intent = new Intent(MainActivity.this, MapsActivity.class);
             startActivity(intent);
