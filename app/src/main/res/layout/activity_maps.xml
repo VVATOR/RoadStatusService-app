@@ -28,7 +28,7 @@
         <include
             layout="@layout/content_maps"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="477dp"
             android:layout_weight="1" />
 
 

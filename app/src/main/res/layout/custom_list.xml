@@ -4,14 +4,33 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <ListView
-        android:id="@+id/list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <ProgressBar
+            android:id="@+id/progressBarForList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ProgressBar>
+
+        <TextView
+            android:id="@+id/tvInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""></TextView>
+
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" />
+    </RelativeLayout>
+
+
     <Button
         android:id="@+id/button1"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" 
-        android:text="Clear Cache"/>
+        android:layout_height="wrap_content"
+        android:text="Back" />
 </LinearLayout>

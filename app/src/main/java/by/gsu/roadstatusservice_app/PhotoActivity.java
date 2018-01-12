@@ -1,5 +1,6 @@
 package by.gsu.roadstatusservice_app;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -11,12 +12,17 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import by.gsu.RoadStatusService.models.Picture;
 import by.gsu.RoadStatusService.models.Point;
@@ -33,7 +39,10 @@ public class PhotoActivity extends AppCompatActivity {
     private EditText editFileName;
     private EditText editDescription;
     private Location location;
+    private Intent intent;
 
+    private TextView tvInfo;
+    private ProgressBar progressBarForList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +50,12 @@ public class PhotoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_photo);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        intent = getIntent();
+        tvInfo = (TextView) findViewById(R.id.tvInfo);
+        progressBarForList = (ProgressBar) findViewById(R.id.progressBarForList);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +67,6 @@ public class PhotoActivity extends AppCompatActivity {
         });
 
 
-
         location = (Location) getIntent().getParcelableExtra(Location.class.getCanonicalName());
         iv = (ImageView) findViewById(R.id.photoImageView);
         editFileName = (EditText) findViewById(R.id.editFileName);
@@ -61,10 +75,6 @@ public class PhotoActivity extends AppCompatActivity {
         Intent data = getIntent();
 
         //String fName = intent.getStringExtra("fname");
-
-
-
-
 
 
         Bitmap bitmap = (Bitmap) data.getExtras().get("data");
@@ -85,38 +95,90 @@ public class PhotoActivity extends AppCompatActivity {
 
                 Point point = new Point(location.getLatitude(), location.getLongitude());
 
-                String fname=editFileName.getText().equals("")?System.currentTimeMillis() + ".jpg":editFileName.getText() + ".jpg";
-                String escription=""+ editDescription.getText();
-                newPicture = new Picture(331, fname, escription, point, encoded);
+                String fname = "".equals(editFileName.getText()) ? System.currentTimeMillis() + ".jpg" : editFileName.getText() + ".jpg";
+                String description = "" + editDescription.getText();
+                newPicture = new Picture(331, fname, description, point, encoded);
 
                 new AsyncTask<Integer, Integer, String>() {
+                    private boolean status = true;
+
+                    @SuppressLint("WrongConstant")
+                    @Override
+                    protected void onPreExecute() {
+                        super.onPreExecute();
+                        progressBarForList.setVisibility(View.VISIBLE);
+                        tvInfo.setVisibility(View.VISIBLE);
+                        tvInfo.setText("Please wait...");
+                        buttonSave.setEnabled(false);
+                        buttonSave.setText("please wait");
+                    }
+
                     @Override
                     protected String doInBackground(Integer... arg) {
-                        client.methodPostPicture(newPicture);
+
+                        Log.e("start async load data", "");
+                        List<Picture> list = new ArrayList();
+
+                        try {
+                            client.methodPostPicture(newPicture);
+                            status = true;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            status = false;
+                            Log.e("error client", "" + e.getMessage());
+                        }
                         return "";
                     }
 
+                    @SuppressLint("WrongConstant")
                     @Override
                     protected void onPostExecute(String s) {
                         super.onPostExecute(s);
-                        sb.append("lol");
+
+
+                        sb = new StringBuilder("sucessfull");
+                        progressBarForList.setVisibility(View.INVISIBLE);
+                        tvInfo.setVisibility(View.INVISIBLE);
+                        tvInfo.setText("");
+                        if (status) {
+                            gotoMain();
+                        } else {
+                            sb = new StringBuilder("error");
+                            buttonSave.setEnabled(true);
+                            buttonSave.setText("try again");
+                        }
+                        Log.i("end async load data", "");
                     }
+
                 }.execute();
 
             }
         });
 
-     /*   buttonCancel = (Button) findViewById(R.id.buttonSave);
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
 
-            }
-        });*/
+        Button buttonCancel = (Button) findViewById(R.id.buttonCancel);
+        buttonCancel.setOnClickListener(listener);
+
     }
 
-    private Picture newPicture;
-    private StringBuilder sb = new StringBuilder("Replace with your own action");
+    public void gotoMain() {
+        intent = new Intent(PhotoActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
 
+
+    private Picture newPicture;
+    private StringBuilder sb = new StringBuilder("Location");
+
+
+    public View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View arg0) {
+            intent = new Intent(PhotoActivity.this, MainActivity.class);
+            startActivity(intent);
+
+        }
+    };
 
 }
 

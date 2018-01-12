@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -37,9 +38,9 @@ public class MainActivity extends AppCompatActivity
     private LocationUtils locationUtils = new LocationUtils(this);
     private Location location;
     private String locationInfo = "";
-
+    private  ImageButton imageButton;
     private IRoadStatusClient client = new Client();
-
+    private Intent intent;
     private ImageView iv;
     private TextView helloTextView;
 
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        intent=getIntent();
         try {
             location = locationUtils.getLocation();
             locationInfo = ("Latitude:" + location.getLatitude() + "; Latitude:" + location.getLatitude() + ";");
@@ -75,9 +77,22 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+
         iv = (ImageView) findViewById(R.id.imageView2);
         helloTextView = (TextView) findViewById(R.id.helloTextView);
+        imageButton = (ImageButton)   findViewById(R.id.imageButton);
+        imageButton.setOnClickListener(listener);
     }
+    public View.OnClickListener listener=new View.OnClickListener(){
+        @Override
+        public void onClick(View arg0) {
+            Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(intent, Action.PHOTO.ordinal());
+            // adapter.imageLoader.clearCache();
+            //adapter.notifyDataSetChanged();
+        }
+    };
 
     @Override
     public void onBackPressed() {
@@ -119,15 +134,14 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
-            Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            // startActivity(intent);
+            intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(intent, Action.PHOTO.ordinal());
 
         } else if (id == R.id.nav_gallery) {
-            Intent intent = new Intent(MainActivity.this, ListActivity.class);
+            intent = new Intent(MainActivity.this, ListActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_slideshow) {
-            Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+        } else if (id == R.id.nav_map) {
+            intent = new Intent(MainActivity.this, MapsActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_manage) {
 
@@ -169,7 +183,7 @@ public class MainActivity extends AppCompatActivity
         switch (action) {
             case PHOTO:
                 if (resultCode == Activity.RESULT_OK) {
-                    Intent intent = new Intent(MainActivity.this, PhotoActivity.class);
+                    intent = new Intent(MainActivity.this, PhotoActivity.class);
                     intent.putExtras(data);
                     intent.putExtra(Location.class.getCanonicalName(), location);
                     startActivity(intent);

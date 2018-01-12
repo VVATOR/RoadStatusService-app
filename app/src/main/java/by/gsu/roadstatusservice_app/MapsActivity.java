@@ -55,7 +55,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     e.printStackTrace();
                 }
                 store =list;
-                Log.i("AAAAAAAA", ""+ store);
+                //Log.i("AAAAAAAA", ""+ store);
                 return list;
             }
 
@@ -69,7 +69,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void loadMap(){
-        Log.i("22222222222222*****22", "");
+        //Log.i("22222222222222*****22", "");
         mapFragment.getMapAsync(this);
     }
 
