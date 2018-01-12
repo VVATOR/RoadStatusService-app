@@ -13,14 +13,11 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.SupportMapFragment;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import by.gsu.RoadStatusService.models.Picture;
-import by.gsu.RoadStatusService.models.Point;
 import by.gsu.client.Client;
 import by.gsu.client.IRoadStatusClient;
 import by.gsu.roadstatusservice_app.MainActivity;
@@ -85,7 +82,7 @@ public class ListActivity extends Activity {
             protected void onPostExecute(List<Picture> result) {
                 super.onPostExecute(result);
 
-                loadMap();
+                loadList();
                 progressBarForList.setVisibility(View.INVISIBLE);
                 tvInfo.setVisibility(View.INVISIBLE);
                 tvInfo.setText("");
@@ -95,8 +92,8 @@ public class ListActivity extends Activity {
         }.execute(this);
     }
 
-    public void loadMap(){
-        Log.i("22222222222222*****22", "");
+    public void loadList(){
+       // Log.i("22222222222222*****22", "");
         adapter=new LazyAdapter(this, store);
         list.setAdapter(adapter);
     }

@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity
         intent=getIntent();
         try {
             location = locationUtils.getLocation();
-            locationInfo = ("Latitude:" + location.getLatitude() + "; Latitude:" + location.getLatitude() + ";");
+            locationInfo = ("Current location: Longitude:" + location.getLatitude() + "; Latitude:" + location.getLatitude() + ";");
         } catch (LocationException e) {
             locationInfo = (e.getMessage());
         }
@@ -143,8 +143,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_map) {
             intent = new Intent(MainActivity.this, MapsActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_manage) {
-
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
