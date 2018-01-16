@@ -69,12 +69,6 @@ public class ImageLoader {
 
         imageView.setImageBitmap(decodedByte);
 
-
-
-
-
-
-
     }
         
     private void queuePhoto(String url, ImageView imageView)

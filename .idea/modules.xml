@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RoadStatusService-app.iml" filepath="$PROJECT_DIR$/RoadStatusService-app.iml" />
+      <module fileurl="file://C:\@ANDROID\RoadStatusService-app\RoadStatusService-app.iml" filepath="C:\@ANDROID\RoadStatusService-app\RoadStatusService-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
