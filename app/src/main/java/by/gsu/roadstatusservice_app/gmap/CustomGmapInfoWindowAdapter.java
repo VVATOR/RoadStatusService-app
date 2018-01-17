@@ -26,9 +26,13 @@ public class CustomGmapInfoWindowAdapter implements GoogleMap.InfoWindowAdapter 
     public View getInfoContents(Marker marker) {
         Picture picture = (Picture) marker.getTag();
         TextView tvTitle = ((TextView) myContentsView.findViewById(R.id.title));
-        tvTitle.setText(picture.getId() + "+" + marker.getId() + "-vva-" + marker.getTitle());
+        tvTitle.setText("id:" + picture.getId() + "; name: " + marker.getTitle()+"description: "+picture.getDescription());
+
         TextView tvSnippet = ((TextView) myContentsView.findViewById(R.id.snippet));
         tvSnippet.setText(marker.getSnippet());
+
+        TextView description = ((TextView) myContentsView.findViewById(R.id.description));
+        description.setText("description: "+picture.getDescription());
 
         ImageView image = ((ImageView) myContentsView.findViewById(R.id.image));
         if (picture.getData() != null) {
@@ -42,7 +46,6 @@ public class CustomGmapInfoWindowAdapter implements GoogleMap.InfoWindowAdapter 
 
     @Override
     public View getInfoWindow(Marker marker) {
-        // TODO Auto-generated method stub
         return null;
     }
 
