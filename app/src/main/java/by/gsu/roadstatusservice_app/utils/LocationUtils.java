@@ -13,10 +13,6 @@ import android.util.Log;
 
 import by.gsu.roadstatusservice_app.exceptions.LocationException;
 
-/**
- * Created by Vitali_Vikhliayeu on 2018-01-04.
- */
-
 public class LocationUtils implements LocationListener {
     private Activity activity;
 
@@ -35,8 +31,7 @@ public class LocationUtils implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        //  txtLat = (TextView) findViewById(R.id.txtLocationText);
-        //  txtLat.setText("Latitude:" + location.getLatitude() + ", Longitude:" + location.getLongitude());
+
     }
 
     @Override

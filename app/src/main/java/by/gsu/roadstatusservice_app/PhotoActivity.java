@@ -30,19 +30,26 @@ import by.gsu.client.Client;
 import by.gsu.client.IRoadStatusClient;
 
 public class PhotoActivity extends AppCompatActivity {
-
     private IRoadStatusClient client = new Client();
     private ImageView iv;
     private Button buttonSave;
     private Button buttonCancel;
-
     private EditText editFileName;
     private EditText editDescription;
     private Location location;
     private Intent intent;
+    public View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View arg0) {
+            intent = new Intent(PhotoActivity.this, MainActivity.class);
+            startActivity(intent);
 
+        }
+    };
     private TextView tvInfo;
     private ProgressBar progressBarForList;
+    private Picture newPicture;
+    private StringBuilder sb = new StringBuilder("Location");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +58,9 @@ public class PhotoActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         intent = getIntent();
         tvInfo = (TextView) findViewById(R.id.tvInfo);
         progressBarForList = (ProgressBar) findViewById(R.id.progressBarForList);
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +71,6 @@ public class PhotoActivity extends AppCompatActivity {
             }
         });
 
-
         location = (Location) getIntent().getParcelableExtra(Location.class.getCanonicalName());
         iv = (ImageView) findViewById(R.id.photoImageView);
         editFileName = (EditText) findViewById(R.id.editFileName);
@@ -74,12 +78,8 @@ public class PhotoActivity extends AppCompatActivity {
 
         Intent data = getIntent();
 
-        //String fName = intent.getStringExtra("fname");
-
-
         Bitmap bitmap = (Bitmap) data.getExtras().get("data");
         iv.setImageBitmap(bitmap);
-
 
         buttonSave = (Button) findViewById(R.id.buttonSave);
         buttonSave.setOnClickListener(new View.OnClickListener() {
@@ -151,35 +151,17 @@ public class PhotoActivity extends AppCompatActivity {
                     }
 
                 }.execute();
-
             }
         });
 
-
         Button buttonCancel = (Button) findViewById(R.id.buttonCancel);
         buttonCancel.setOnClickListener(listener);
-
     }
 
     public void gotoMain() {
         intent = new Intent(PhotoActivity.this, MainActivity.class);
         startActivity(intent);
     }
-
-
-    private Picture newPicture;
-    private StringBuilder sb = new StringBuilder("Location");
-
-
-    public View.OnClickListener listener = new View.OnClickListener() {
-        @Override
-        public void onClick(View arg0) {
-            intent = new Intent(PhotoActivity.this, MainActivity.class);
-            startActivity(intent);
-
-        }
-    };
-
 }
 
 

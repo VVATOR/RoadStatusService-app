@@ -3,7 +3,6 @@ package by.gsu.roadstatusservice_app;
 import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -20,29 +19,30 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.IOException;
-
 import by.gsu.RoadStatusService.models.Picture;
 import by.gsu.client.Client;
 import by.gsu.client.IRoadStatusClient;
 import by.gsu.roadstatusservice_app.exceptions.LocationException;
-import by.gsu.roadstatusservice_app.lazylist.ListActivity;
 import by.gsu.roadstatusservice_app.utils.LocationUtils;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    enum Action {
-        PHOTO;
-    }
-
+    public View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View arg0) {
+            Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(intent, Action.PHOTO.ordinal());
+        }
+    };
     private LocationUtils locationUtils = new LocationUtils(this);
     private Location location;
     private String locationInfo = "";
-    private  ImageButton imageButton;
+    private ImageButton imageButton;
     private IRoadStatusClient client = new Client();
     private Intent intent;
     private ImageView iv;
     private TextView helloTextView;
+    private Picture newPicture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        intent=getIntent();
+        intent = getIntent();
         try {
             location = locationUtils.getLocation();
             locationInfo = ("Current location: Longitude:" + location.getLatitude() + "; Latitude:" + location.getLatitude() + ";");
@@ -77,22 +77,11 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-
         iv = (ImageView) findViewById(R.id.imageView2);
         helloTextView = (TextView) findViewById(R.id.helloTextView);
-        imageButton = (ImageButton)   findViewById(R.id.imageButton);
+        imageButton = (ImageButton) findViewById(R.id.imageButton);
         imageButton.setOnClickListener(listener);
     }
-    public View.OnClickListener listener=new View.OnClickListener(){
-        @Override
-        public void onClick(View arg0) {
-            Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent, Action.PHOTO.ordinal());
-            // adapter.imageLoader.clearCache();
-            //adapter.notifyDataSetChanged();
-        }
-    };
 
     @Override
     public void onBackPressed() {
@@ -106,37 +95,26 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         if (id == R.id.nav_camera) {
-            // Handle the camera action
             intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(intent, Action.PHOTO.ordinal());
-
         } else if (id == R.id.nav_gallery) {
             intent = new Intent(MainActivity.this, ListActivity.class);
             startActivity(intent);
@@ -144,34 +122,12 @@ public class MainActivity extends AppCompatActivity
             intent = new Intent(MainActivity.this, MapsActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_share) {
-            intent = new Intent(MainActivity.this, MyInfoWindowActivity.class);
+            intent = new Intent(MainActivity.this, ImageActivity.class);
             startActivity(intent);
-
-        } else if (id == R.id.nav_send) {
-            int ii = 2;
-            new AsyncTask<Integer, Integer, String>() {
-                @Override
-                protected String doInBackground(Integer... arg) {
-                    try {
-                        newPicture = client.methodGetPicture(arg[0]);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    return "";
-                }
-
-                @Override
-                protected void onPostExecute(String s) {
-                    super.onPostExecute(s);
-                    //  new PhotoActivity.AsyncRequest().execute("123", "/ajax", "foo=bar");
-
-
-                    helloTextView.setText(newPicture.toString());
-
-                }
-            }.execute(ii);
+        } else if (id == R.id.nav_about) {
+            intent = new Intent(MainActivity.this, AboutActivity.class);
+            startActivity(intent);
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -191,5 +147,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private Picture newPicture;
+    enum Action {
+        PHOTO;
+    }
 }
